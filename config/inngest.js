@@ -1,5 +1,6 @@
 import { Inngest } from "inngest";
-import User from "@/models/User"
+import connectDB from "./db";
+import User from "@/models/User";
 
 // Create a client to send and receive events
 export const inngest = new Inngest({ id: "E-Commerce-App-next" });
@@ -43,5 +44,20 @@ export const syncUserUpdation =inngest.createFunction(
              }
              await connectDB()
              await User.findByIdAndUpdate(id,userData)
+          }
+)
+
+//inngest Function to delete user data in database
+
+export const syncUserDeletion =inngest.createFunction(
+          {
+           id:'delete-user-with-clerk'         
+          },
+          {event:'clerk/user.deleted'},
+          async ({event}) =>{
+                    const {id} =event.data
+             
+             await connectDB()
+             await User.findByIdAndDelete(id)
           }
 )
