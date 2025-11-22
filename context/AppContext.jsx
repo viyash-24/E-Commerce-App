@@ -15,6 +15,8 @@ export const AppContextProvider = (props) => {
     const router = useRouter()
 
     const {user} =useUser()
+    const {getToken} =useAuth()
+    
 
     const [products, setProducts] = useState([])
     const [userData, setUserData] = useState(false)
@@ -94,7 +96,7 @@ export const AppContextProvider = (props) => {
     }, [user])
 
     const value = {
-        user,
+        user,getToken,
         currency, router,
         isSeller, setIsSeller,
         userData, fetchUserData,
