@@ -8,14 +8,31 @@ import Loading from "@/components/Loading";
 
 const ProductList = () => {
 
-  const { router } = useAppContext()
+  const { router ,getToken ,user} = useAppContext()
 
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
 
   const fetchSellerProduct = async () => {
-    setProducts(productsDummyData)
-    setLoading(false)
+     try {
+      
+      const token =await getToken()
+      const {data}= await axios.get('/api/product/seller-list',{headers:{Authorization: `Bearer ${token} `}})
+
+      if (data.success) {
+        setProducts(data.products)
+        setLoading(false)
+
+      }else{
+        toast.error(data.message)
+      }
+ 
+        
+      
+
+     } catch (error) {
+      toast.error(error.message)
+     }
   }
 
   useEffect(() => {
