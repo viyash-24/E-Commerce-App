@@ -73,7 +73,7 @@ export async function POST(request){
             return NextResponse.json({success:true,message:"Upload Successful",newProduct})
 
           } catch (error) {
-                    
+                    NextResponse.json({success:false,message:error.message})
           }
 }
  
