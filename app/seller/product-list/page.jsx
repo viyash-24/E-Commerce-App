@@ -1,10 +1,12 @@
 'use client'
 import React, { useEffect, useState } from "react";
-import { assets, productsDummyData } from "@/assets/assets";
+import { assets } from "@/assets/assets";
 import Image from "next/image";
 import { useAppContext } from "@/context/AppContext";
 import Footer from "@/components/seller/Footer";
 import Loading from "@/components/Loading";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const ProductList = () => {
 
@@ -25,11 +27,8 @@ const ProductList = () => {
 
       }else{
         toast.error(data.message)
-      }
- 
-        
-      
-
+      }   
+     
      } catch (error) {
       toast.error(error.message)
      }
@@ -38,9 +37,7 @@ const ProductList = () => {
   useEffect(() => {
     if (user) {
       fetchSellerProduct();
-    }
-
-    
+    }    
   }, [user])
 
   return (

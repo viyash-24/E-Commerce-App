@@ -4,6 +4,7 @@ import { assets } from "@/assets/assets";
 import Image from "next/image";
 import { useAppContext } from "@/context/AppContext";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 const AddProduct = () => {
 
@@ -27,15 +28,18 @@ const AddProduct = () => {
     formData.append('price',price)
     formData.append('offerPrice',offerPrice)
 
-    for (let i = 0; i < array.length; i++) {
-      formData.append('images',files[i])
-      
+    for (let i = 0; i < files.length; i++) {
+      if (files[i]) {
+        formData.append('images', files[i])
+      }
     }
 
     try {
       const token =await getToken()
 
-      const {data} =await axios.post('/api/product/add', formData,{header:{Authorization:`Bearer ${token}`}})
+      const {data} = await axios.post('/api/product/add', formData, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
 
       if (data.success) {
 
@@ -43,7 +47,7 @@ const AddProduct = () => {
           setFiles([])
           setName('')
           setDescription('')
-          setCategory('EarPhone')
+          setCategory('Earphone')
           setPrice('')
           setOfferPrice('')
 
