@@ -36,8 +36,12 @@ const ProductList = () => {
   }
 
   useEffect(() => {
-    fetchSellerProduct();
-  }, [])
+    if (user) {
+      fetchSellerProduct();
+    }
+
+    
+  }, [user])
 
   return (
     <div className="flex-1 min-h-screen flex flex-col justify-between">
