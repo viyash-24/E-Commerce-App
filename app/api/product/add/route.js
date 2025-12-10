@@ -3,14 +3,18 @@ import authSeller from "@/lib/authSeller";
 import { getAuth } from "@clerk/nextjs/server";
 import { v2 as cloudinary } from "cloudinary";
 import { NextResponse } from "next/server";
-import { resolve } from "styled-jsx/css";
+import Product from "@/models/Protect";
 
-//configure cloudinary
+// Configure Cloudinary with trimmed env vars to avoid stray spaces
+const CLOUDINARY_CLOUD_NAME = (process.env.CLOUDINARY_CLOUD_NAME || "").trim();
+const CLOUDINARY_API_KEY = (process.env.CLOUDINARY_API_KEY || "").trim();
+const CLOUDINARY_API_SECRET = (process.env.CLOUDINARY_API_SECRET || "").trim();
 
 cloudinary.config({
-          cloud_name:process.env.CLOUDINARY_CLOUD_NAME,
-          api_key:process.env.CLOUDINARY_API_KEY ,
-          api_secret:process.env.CLOUDINARY_API_SECRET
+          cloud_name: CLOUDINARY_CLOUD_NAME,
+          api_key: CLOUDINARY_API_KEY,
+          api_secret: CLOUDINARY_API_SECRET,
+          secure: true
 })
 
 export async function POST(request){
@@ -19,7 +23,12 @@ export async function POST(request){
                     const isSeller=await authSeller(userId)
 
                     if (!isSeller) {
-                              return NextResponse.json({success:false,message:'not authorized'})
+                              return NextResponse.json({success:false,message:'not authorized'},{status:401})
+                    }
+
+                    // Validate Cloudinary configuration at request time as well
+                    if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_API_SECRET) {
+                              return NextResponse.json({success:false,message:'Cloudinary is not configured'}, {status:500})
                     }
                     const formData =await request.formData()
 
@@ -32,7 +41,7 @@ export async function POST(request){
                     const files=formData.getAll('images');
 
                     if (!files || files.length === 0) {
-                              return NextResponse.json({success:false,message:'no files uploaded'})
+                              return NextResponse.json({success:false,message:'no files uploaded'}, {status:400})
                     }
 
                     const result =await Promise.all(
@@ -70,10 +79,10 @@ export async function POST(request){
                     image,
                     date:Date.now()
             })
-            return NextResponse.json({success:true,message:"Upload Successful",newProduct})
+            return NextResponse.json({success:true,message:"Upload Successful",newProduct},{status:201})
 
           } catch (error) {
-                    NextResponse.json({success:false,message:error.message})
+                    return NextResponse.json({success:false,message:error.message},{status:500})
           }
 }
  
