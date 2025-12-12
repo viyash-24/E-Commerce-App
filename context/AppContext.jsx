@@ -84,6 +84,7 @@ export const AppContextProvider = (props) => {
             cartData[itemId] = 1;
         }
         setCartItems(cartData);
+        toast.success('Iteam added to cart')
 
     }
 
