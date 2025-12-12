@@ -21,8 +21,8 @@ This repo is **frontend only** – contributors can improve the design, add new 
 1. Clone the repo
 
     ```bash
-    git clone https://github.com/GreatStackDev/QuickCart.git
-    cd QuickCart
+    git clone https://github.com/viyash-24/E-Commerce-App.git
+    cd E-Commerce-App
     ```
 
 2. Install dependencies
@@ -71,3 +71,5 @@ Thanks to everyone who contributes to **QuickCart**!
 ## using thirtparty 
 
 clerk api
+inngest
+clodinary
