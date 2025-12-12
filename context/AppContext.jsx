@@ -49,17 +49,28 @@ export const AppContextProvider = (props) => {
         
         const token = await getToken()
 
-        const {data} =await axios.get('/api/user/data',{headers:{Authorization:`Bearer ${token}`}})
+        const resp = await axios.get('/api/user/data',{headers:{Authorization:`Bearer ${token}`}})
+        const { data } = resp
 
         if (data.success){
             setUserData(data.user)
             setCartItems(data.user.cartItems)
         }else{
-            toast.error(data.message)
+            // Avoid noisy toasts for expected states
+            if (resp.status !== 401 && resp.status !== 404) {
+                toast.error(data.message)
+            }
         }
         
         } catch (error) {
-            toast.error(error.message)
+            // Handle API status-specific errors
+            const status = error?.response?.status
+            const msg = error?.response?.data?.message || error.message
+            if (status === 401 || status === 404) {
+                // silently ignore unauthenticated or missing user on initial load
+                return
+            }
+            toast.error(msg)
         }
     }
 
