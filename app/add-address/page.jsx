@@ -10,7 +10,7 @@ import axios from "axios";
 
 const AddAddress = () => {
 
-    const {getToken ,router} =useAppContext
+    const {getToken ,router} =useAppContext()
 
     const [address, setAddress] = useState({
         fullName: '',
