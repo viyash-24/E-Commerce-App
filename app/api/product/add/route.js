@@ -3,7 +3,7 @@ import authSeller from "@/lib/authSeller";
 import { getAuth } from "@clerk/nextjs/server";
 import { v2 as cloudinary } from "cloudinary";
 import { NextResponse } from "next/server";
-import Product from "@/models/Protect";
+import Product from "@/models/Product";
 
 // Configure Cloudinary with trimmed env vars to avoid stray spaces
 const CLOUDINARY_CLOUD_NAME = (process.env.CLOUDINARY_CLOUD_NAME || "").trim();
