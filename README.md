@@ -2,7 +2,7 @@
 
 QuickCart is an open-source **Next.js eCommerce frontend** project.  
 It provides a modern, fast and customizable shopping UI.  
-This repo is **frontend only** – contributors can improve the design, add new pages, animations and more.
+
 
 ---
 
@@ -70,6 +70,6 @@ Thanks to everyone who contributes to **QuickCart**!
 
 ## using thirtparty 
 
-clerk api
-inngest
-clodinary
+- clerk api
+- inngest
+- clodinary
