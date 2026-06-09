@@ -66,7 +66,7 @@ This project is licensed under the **MIT License**.
 
 ## 🌟 Contributors
 
-Thanks to everyone who contributes to **QuickCart**!
+**viyashan**
 
 ## using thirtparty 
 
