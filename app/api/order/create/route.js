@@ -3,11 +3,13 @@ import Product from "@/models/Product";
 import User from "@/models/User";
 import { getAuth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import connectDB from "@/config/db";
 
 
 export async function POST(request) {
           try {
                  const {userId} =getAuth(request)  
+                 await connectDB()
 
                  const {address,items}= await request.json()
 
@@ -18,7 +20,7 @@ export async function POST(request) {
                  // calculate amount using items
                  const amount = await items.reduce(async(acc,item) =>{
                     const product =await Product.findById(item.product)
-
+                    if (!product) return await acc;
                     return await acc + product.offerPrice * item.quantity
                  },0)
 
@@ -35,9 +37,12 @@ export async function POST(request) {
                  })
 
                  //clear user cart
+                 //clear user cart
                  const user =await User.findById(userId)
-                 user.cartItems ={}
-                 await user.save()
+                 if (user) {
+                     user.cartItems ={}
+                     await user.save()
+                 }
 
                  return NextResponse.json({success:true,message:'Order Placed'})
 
