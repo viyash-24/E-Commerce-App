@@ -12,9 +12,11 @@ export async function POST(request) {
 
                    await connectDB()
                    const user =await User.findById(userId)
-
-                   user.cartItems =cartData
-                  await user.save()
+                   
+                   if (user) {
+                       user.cartItems =cartData
+                       await user.save()
+                   }
 
                   return NextResponse.json({success:true});
                     
